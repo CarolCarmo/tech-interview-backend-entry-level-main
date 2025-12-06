@@ -1,7 +1,7 @@
 class CartsController < ApplicationController
   def add_items
     # Retrieve the cart from the session, or create a new one if it doesn't exist
-    cart = Cart.find_or_create_by(id: session[:cart_id])
+    cart = Cart.find_by(id: session[:cart_id]) || Cart.create!(total_price: 0.0)
     session[:cart_id] ||= cart.id
 
     # Find the product to be added
