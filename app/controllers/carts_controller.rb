@@ -1,8 +1,8 @@
 class CartsController < ApplicationController
+  # POST /cart/add_items
   def add_items
-    # Retrieve the cart from the session, or create a new one if it doesn't exist
-    cart = Cart.find_by(id: session[:cart_id]) || Cart.create!(total_price: 0.0)
-    session[:cart_id] ||= cart.id
+    # Find the cart by ID from params, or create it if it doesn't exist
+    cart = Cart.first_or_create!
 
     # Find the product to be added
     product = Product.find(params[:product_id])
@@ -10,12 +10,11 @@ class CartsController < ApplicationController
     # Convert quantity to an integer
     quantity = params[:quantity].to_i
 
-    # Find the existing cart item or initialize a new one for the product
-    cart_item = cart.cart_items.find_or_initialize_by(product_id: product.id)
-    cart_item.quantity ||= 0
-
-    # Increase the quantity of the item in the cart
-    cart_item.quantity += quantity
+    # Find existing cart item or initialize a new one
+    cart_item = cart.cart_items.find_or_initialize_by(product: product)
+    
+    # Increment the quantity of the cart item
+    cart_item.quantity = (cart_item.quantity || 0) + quantity
     cart_item.save!
 
     # Return the updated cart item as JSON
@@ -25,10 +24,11 @@ class CartsController < ApplicationController
     }, status: :ok
 
   rescue ActiveRecord::RecordNotFound
-    render json: { error: 'Product not found' }, status: :not_found
-    
+    # If the cart or product was not found
+    render json: { error: 'Cart or Product not found' }, status: :not_found
+
   rescue StandardError => e
+    # Handle other errors
     render json: { error: e.message }, status: :unprocessable_entity
   end
-
 end

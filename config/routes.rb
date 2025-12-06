@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   #Cart routes
   post 'cart', to: 'carts#create'
-  post 'cart/add_items', to: 'carts#add_item'
+  post 'cart/add_items', to: 'carts#add_items'
   get 'cart', to: 'carts#show'
   
   get "up" => "rails/health#show", as: :rails_health_check
