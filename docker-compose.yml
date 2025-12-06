@@ -18,18 +18,18 @@ services:
         - redis_data:/data  
     web:
         web:
-    build: .
-    command: bundle exec rails s -b 0.0.0.0
-    volumes:
-        - .:/rails
-    ports:
-        - '3000:3000'
-    depends_on:
-        - db
-        - redis
-    environment:
-        - DATABASE_URL=postgresql://postgres:password@db:5432/myapp_development
-        - REDIS_URL=redis://redis:6379/0
+        build: .
+        command: bundle exec rails s -b 0.0.0.0
+        volumes:
+            - .:/rails
+        ports:
+            - '3000:3000'
+        depends_on:
+            - db
+            - redis
+        environment:
+            - DATABASE_URL=postgresql://postgres:password@db:5432/myapp_development
+            - REDIS_URL=redis://redis:6379/0
     test:
         build: .
         command: bundle exec rspec

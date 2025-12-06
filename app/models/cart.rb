@@ -15,4 +15,9 @@ class Cart < ApplicationRecord
     update(abandoned: true) # if there is an 'abandoned:boolean' column
   end
 
+  # Remove the cart if it has been abandoned for a certain time
+  def remove_if_abandoned
+    destroy if abandoned && last_interaction_at < 1.day.ago
+  end
+
 end
