@@ -16,8 +16,8 @@ RSpec.describe "/carts", type: :request do
 
         json = JSON.parse(response.body)
         expect(response).to have_http_status(:ok)
-        expect(json["cart_item"]["quantity"]).to eq(1)
-        expect(json["message"]).to eq("Item added to cart successfully")
+        expect(json["products"][0]["quantity"]).to eq(1)
+        expect(json["id"]).not_to be_nil
       end
     end
 
@@ -34,8 +34,8 @@ RSpec.describe "/carts", type: :request do
 
         json = JSON.parse(response.body)
         expect(response).to have_http_status(:ok)
-        expect(json["cart_item"]["quantity"]).to eq(3)
-        expect(json["message"]).to eq("Item added to cart successfully")
+        expect(json["products"][0]["quantity"]).to eq(3)
+        expect(json["id"]).not_to be_nil
       end
     end
   end
