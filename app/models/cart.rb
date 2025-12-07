@@ -3,8 +3,6 @@ class Cart < ApplicationRecord
   
   has_many :cart_items, dependent: :destroy
 
-  before_save :calculate_total
-
   # Calculate total price before saving
   def calculate_total
     self.total_price = cart_items.sum { |item| item.quantity * item.product.price }
@@ -19,5 +17,6 @@ class Cart < ApplicationRecord
   def remove_if_abandoned
     destroy if abandoned && last_interaction_at < 1.day.ago
   end
+  
 
 end
