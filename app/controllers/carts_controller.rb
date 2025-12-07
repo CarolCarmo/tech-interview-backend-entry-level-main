@@ -4,7 +4,6 @@ class CartsController < ApplicationController
   # GET /cart
   def index
     # Find the cart by ID from params, or create it if it doesn't exist
-    #TODO: Adjust to get current user's cart
     cart = Cart.first_or_create!   
 
     # Return the updated cart item as JSON
